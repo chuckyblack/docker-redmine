@@ -1,0 +1,25 @@
+version: '2'
+services:
+    redmine:
+        image: redmine:passenger
+        restart: always
+        links:
+            - db
+        environment:
+            - REDMINE_DB_MYSQL=db
+            - MYSQL_ENV_MYSQL_USER=redmine
+            - MYSQL_ENV_MYSQL_PASSWORD=secret
+            - REDMINE_DB_ENCODING=utf8
+        volumes:
+            - ./configuration.yml:/usr/src/redmine/config/configuration.yml
+            - ./plugins:/usr/src/redmine/plugins
+    db:
+        image: mysql:latest
+        restart: always
+        environment:
+            - MYSQL_DATABASE=redmine
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_USER=redmine
+            - MYSQL_PASSWORD=secret
+        volumes:
+            - ./charset.cnf:/etc/mysql/conf.d/charset.cnf
