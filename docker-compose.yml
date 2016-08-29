@@ -3,6 +3,8 @@ services:
     redmine:
         image: redmine:passenger
         restart: always
+        ports:
+            - "3000:3000"
         links:
             - db
         environment:
